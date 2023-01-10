@@ -2,7 +2,10 @@ module github.com/gogo-lib/httpclient
 
 go 1.18
 
-require github.com/valyala/fasthttp v1.43.0
+require (
+	github.com/sony/gobreaker v0.5.0
+	github.com/valyala/fasthttp v1.43.0
+)
 
 require (
 	github.com/andybalholm/brotli v1.0.4 // indirect

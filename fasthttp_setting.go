@@ -1,6 +1,8 @@
 package httpclient
 
 import (
+	"fmt"
+	"net"
 	"time"
 
 	"github.com/valyala/fasthttp"
@@ -26,5 +28,19 @@ func WithIdleKeepAliveDuration(duration time.Duration) func(*fasthttp.Client) {
 func WithMaxIdemponentCallAttempts(idemponent int) func(*fasthttp.Client) {
 	return func(c *fasthttp.Client) {
 		c.MaxIdemponentCallAttempts = idemponent
+	}
+}
+
+// WithDialTimeout tcp Dial with duration timeout
+func WithDialTimeout(duration time.Duration) func(*fasthttp.Client) {
+	return func(c *fasthttp.Client) {
+		c.Dial = func(addr string) (net.Conn, error) {
+			conn, err := fasthttp.DialTimeout(addr, duration)
+			if err != nil {
+				return nil, fmt.Errorf("httpclient.dial %v", err)
+			}
+
+			return conn, nil
+		}
 	}
 }

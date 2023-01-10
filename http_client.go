@@ -3,6 +3,8 @@ package httpclient
 import (
 	"context"
 	"errors"
+	"fmt"
+	"net/http"
 	"strings"
 	"time"
 
@@ -22,10 +24,10 @@ type RequestArgs struct {
 
 func (args RequestArgs) validate() error {
 	if len(strings.TrimSpace(args.RequestURL)) == 0 {
-		return errors.New("RequestArgs.RequestURL is required")
+		return errors.New("httpclient.RequestArgs.validate RequestURL is required")
 	}
 	if len(strings.TrimSpace(args.Method)) == 0 {
-		return errors.New("RequestArgs.Method is required")
+		return errors.New("httpclient.RequestArgs.validate Method is required")
 	}
 
 	return nil
@@ -82,7 +84,7 @@ func (c *Client) Do(ctx context.Context, args RequestArgs) Response {
 	if err != nil {
 		return Response{
 			Err:  err,
-			Code: 400,
+			Code: http.StatusBadRequest,
 		}
 	}
 
@@ -108,7 +110,7 @@ func (c *Client) Do(ctx context.Context, args RequestArgs) Response {
 
 	if err != nil {
 		return Response{
-			Err:  err,
+			Err:  fmt.Errorf("httpclient.Do %v", err),
 			Code: resp.StatusCode(),
 		}
 	}
