@@ -44,7 +44,7 @@ type Client struct {
 }
 
 // NewClient create new Client instance with fasthttp as dependency
-func NewClient(options ...fasthttpClientSetting) *Client {
+func NewClient(options ...func(*fasthttp.Client)) *Client {
 	client := &Client{
 		fasthttpClient: &fasthttp.Client{
 			NoDefaultUserAgentHeader: true,
