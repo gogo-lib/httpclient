@@ -23,9 +23,9 @@ func (b breaker) getCircuitBreaker(requestURL string) *gobreaker.CircuitBreaker 
 		// not exist, create
 		newCb := gobreaker.NewCircuitBreaker(gobreaker.Settings{
 			Name:        requestURL,
-			MaxRequests: 5,
-			Interval:    0,
-			Timeout:     time.Second * 10,
+			MaxRequests: 5,                // MaxRequests pass through cb when state if half-open
+			Interval:    time.Minute,      // Reset counter in open
+			Timeout:     time.Second * 10, // change to half-open when open
 			ReadyToTrip: func(counts gobreaker.Counts) bool {
 				return counts.ConsecutiveFailures >= 10
 			},

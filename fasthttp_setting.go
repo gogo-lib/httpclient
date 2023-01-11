@@ -35,6 +35,7 @@ func WithMaxIdemponentCallAttempts(idemponent int) func(*fasthttp.Client) {
 func WithDialTimeout(duration time.Duration) func(*fasthttp.Client) {
 	return func(c *fasthttp.Client) {
 		c.Dial = func(addr string) (net.Conn, error) {
+			// TODO optimize tcp dial
 			conn, err := fasthttp.DialTimeout(addr, duration)
 			if err != nil {
 				return nil, fmt.Errorf("httpclient.dial %v", err)
